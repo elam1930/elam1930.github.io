@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memotivation</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --accent: #fd79a8;
+            --light: #f5f6fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--light);
+            overflow: hidden;
+        }
+        
+        .container {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+        
+        .timer-container {
+            margin: 30px auto;
+            width: 220px;
+            height: 220px;
+            position: relative;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        #timer {
+            font-size: 3.5rem;
+            font-weight: 600;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 600;
+            min-width: 120px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+        
+        #startBtn { 
+            background: #00b894;
+            box-shadow: 0 5px 20px rgba(0,184,148,0.3);
+        }
+        
+        #pauseBtn { 
+            background: var(--accent);
+            box-shadow: 0 5px 20px rgba(253,121,168,0.3);
+        }
+        
+        #tryBtn { 
+            background: #0984e3;
+            box-shadow: 0 5px 20px rgba(9,132,227,0.3);
+        }
+        
+        .meme-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            display: none;
+            cursor: pointer;
+        }
+        
+        .meme-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 8px 20px;
+            border-radius: 20px;
+            z-index: 101;
+            display: none;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent);
+            opacity: 0;
+            z-index: 10;
+            border-radius: 50%;
+        }
+        
+        .progress-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo">Memotivation</h1>
+        <p class="tagline">Study hard • Earn memes • Repeat</p>
+        
+        <div class="timer-container">
+            <svg class="progress-ring" width="220" height="220">
+                <circle class="progress-ring__circle" stroke="#a29bfe" stroke-width="8" fill="transparent" r="100" cx="110" cy="110"/>
+            </svg>
+            <div id="timer">30:00</div>
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn">Start</button>
+            <button id="pauseBtn" disabled>Pause</button>
+            <button id="tryBtn">Try Now</button>
+        </div>
+    </div>
+    
+    <img id="memeFullscreen" class="meme-fullscreen" src="" alt="Meme">
+    <div id="memeCounter" class="meme-counter">Meme 1/9</div>
+
+    <script>
+        let timer;
+        let timeLeft = 30 * 60;
+        let isRunning = false;
+        let currentMemeIndex = 0;
+        
+        const memes = [
+            "https://pbs.twimg.com/tweet_video_thumb/Goqz_yBXwAEZ4-2.jpg",
+            "https://i.gifer.com/embedded/download/2xTG.gif",
+            "https://art.pixilart.com/sr2d12e7b44c659.png",
+            "https://images.steamusercontent.com/ugc/55838026442545995/1B8CFEACA6F8E58C798E892BA29E685C9DDE5B9A/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false",
+            "https://avatars.mds.yandex.net/i?id=599e8d594675201df0730dae7da066e2f13a1aaf-5179059-images-thumbs&n=13",
+            "https://media.tenor.com/31MJQhL6sM8AAAAd/joe-rogan-surprised.gif",
+            "https://avatars.mds.yandex.net/i?id=4ff04e6d8b5e18d8fea3496585bd0b022d621c70-5340383-images-thumbs&n=13",
+            "https://lh4.googleusercontent.com/-7c9apZud9r8/UqNSsH3Ev5I/AAAAAAAABK8/SZkZPWvf45c/w800-h800/cat-plays-ipad-dancing-trolls-trollface-meme-lolcat-funny.gif",
+            "https://avatars.mds.yandex.net/i?id=a9016c7748cb7f85efea89a3c0c76249af3d9a04-5467645-images-thumbs&n=13"
+        ];
+        
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const tryBtn = document.getElementById('tryBtn');
+        const memeFullscreen = document.getElementById('memeFullscreen');
+        const memeCounter = document.getElementById('memeCounter');
+        const circle = document.querySelector('.progress-ring__circle');
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+        
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+        
+        function setProgress(percent) {
+            const offset = circumference - percent * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            const progress = 1 - (timeLeft / (30 * 60));
+            setProgress(progress);
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                showMeme();
+            }
+        }
+        
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timer = setInterval(() => {
+                    timeLeft--;
+                    updateTimer();
+                }, 1000);
+                startBtn.disabled = true;
+                pauseBtn.disabled = false;
+            }
+        }
+        
+        function pauseTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                isRunning = false;
+                pauseBtn.textContent = "Resume";
+            } else {
+                startTimer();
+                pauseBtn.textContent = "Pause";
+            }
+        }
+        
+        function showMeme() {
+            currentMemeIndex = Math.floor(Math.random() * memes.length);
+            memeFullscreen.src = memes[currentMemeIndex];
+            memeFullscreen.style.display = 'block';
+            memeCounter.textContent = `Meme ${currentMemeIndex + 1}/${memes.length}`;
+            memeCounter.style.display = 'block';
+            createConfetti();
+        }
+        
+        function nextMeme() {
+            currentMemeIndex = (currentMemeIndex + 1) % memes.length;
+            memeFullscreen.src = memes[currentMemeIndex];
+            memeCounter.textContent = `Meme ${currentMemeIndex + 1}/${memes.length}`;
+            createConfetti();
+        }
+        
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -10 + 'px';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                document.body.appendChild(confetti);
+                
+                const animation = confetti.animate([
+                    { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translate(${Math.random() * 200 - 100}px, 100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+        
+        startBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+        tryBtn.addEventListener('click', showMeme);
+        memeFullscreen.addEventListener('click', () => {
+            memeFullscreen.style.display = 'none';
+            memeCounter.style.display = 'none';
+            timeLeft = 30 * 60;
+            updateTimer();
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            pauseBtn.textContent = "Pause";
+        });
+        memeFullscreen.addEventListener('dblclick', nextMeme);
+    </script>
+</body>
+</html>
