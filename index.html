@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memotivation</title>
+    <title>StudyMotivator</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap">
     <style>
         :root {
@@ -24,14 +23,12 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: var(--light);
-            overflow: hidden;
+            padding: 20px;
         }
         
         .container {
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .logo {
@@ -41,14 +38,17 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            text-align: center;
         }
         
         .tagline {
             font-size: 1.2rem;
             opacity: 0.8;
             margin-bottom: 30px;
+            text-align: center;
         }
         
+        /* Timer */
         .timer-container {
             margin: 30px auto;
             width: 220px;
@@ -111,6 +111,91 @@
             box-shadow: 0 5px 20px rgba(9,132,227,0.3);
         }
         
+        /* Widgets */
+        .widget {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Chat bot */
+        #chatLog {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        
+        #chatLog div {
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+        
+        #chatLog .user {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        #chatLog .bot {
+            background: rgba(101, 200, 101, 0.2);
+        }
+        
+        #chatInput {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        
+        /* Task board */
+        .task-board {
+            margin-top: 15px;
+            min-height: 100px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        
+        .task {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: grab;
+        }
+        
+        .task input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .delete-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #fd79a8;
+            cursor: pointer;
+        }
+        
+        /* Game */
+        #game button {
+            background: #fd79a8;
+            font-size: 1.5rem;
+            padding: 15px 30px;
+        }
+        
+        #game p {
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+        
+        /* Memes */
         .meme-fullscreen {
             position: fixed;
             top: 0;
@@ -138,6 +223,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
+        /* Confetti */
         .confetti {
             position: absolute;
             width: 12px;
@@ -148,6 +234,7 @@
             border-radius: 50%;
         }
         
+        /* Progress ring */
         .progress-ring {
             position: absolute;
             width: 100%;
@@ -163,9 +250,10 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="logo">Memotivation</h1>
-        <p class="tagline">Study hard • Earn memes • Repeat</p>
+        <h1 class="logo">StudyMotivator</h1>
+        <p class="tagline">Study hard • Earn rewards • Repeat</p>
         
+        <!-- Timer -->
         <div class="timer-container">
             <svg class="progress-ring" width="220" height="220">
                 <circle class="progress-ring__circle" stroke="#a29bfe" stroke-width="8" fill="transparent" r="100" cx="110" cy="110"/>
@@ -178,12 +266,37 @@
             <button id="pauseBtn" disabled>Pause</button>
             <button id="tryBtn">Try Now</button>
         </div>
+        
+        <!-- Chat bot and quotes -->
+        <div class="widget">
+            <h3>Motivation Bot</h3>
+            <div id="chatLog"></div>
+            <input id="chatInput" type="text" placeholder="Type 'quote' or 'tired'...">
+            <button id="quoteBtn">Random Quote</button>
+        </div>
+        
+        <!-- Task board -->
+        <div class="widget">
+            <h3>My Goals</h3>
+            <input id="taskInput" type="text" placeholder="E.g. 'Learn JavaScript'">
+            <button id="addTask">+ Add Task</button>
+            <div id="taskBoard" class="task-board"></div>
+        </div>
+        
+        <!-- Mini-game (hidden by default) -->
+        <div id="game" class="widget" style="display: none;">
+            <h3>Clicker Challenge! Click 10 times in 3 seconds!</h3>
+            <button id="clicker">Clicks: 0</button>
+            <p id="gameTimer">3.00</p>
+        </div>
+        
+        <!-- Meme reward (hidden by default) -->
+        <img id="memeFullscreen" class="meme-fullscreen" src="" alt="Reward Meme">
+        <div id="memeCounter" class="meme-counter">Meme 1/9</div>
     </div>
-    
-    <img id="memeFullscreen" class="meme-fullscreen" src="" alt="Meme">
-    <div id="memeCounter" class="meme-counter">Meme 1/9</div>
 
     <script>
+        // Timer functionality
         let timer;
         let timeLeft = 30 * 60;
         let isRunning = false;
@@ -229,7 +342,8 @@
             
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                showMeme();
+                if (Math.random() > 0.5) showGame();
+                else showMeme();
             }
         }
         
@@ -295,12 +409,133 @@
             }
         }
         
+        // Chat bot and quotes
+        const quotes = [
+            "Success is 1% talent and 99% hard work.",
+            "The only way to do great work is to love what you do.",
+            "Don't watch the clock; do what it does. Keep going.",
+            "Believe you can and you're halfway there."
+        ];
+        
+        const botAnswers = {
+            "hi": "Hello! Ready to be productive today? 💪",
+            "hello": "Hey there! Type 'quote' for motivation!",
+            "tired": "Take a 5-minute break, then keep going!",
+            "quote": quotes[Math.floor(Math.random() * quotes.length)],
+            "default": "You're capable of amazing things! Type 'quote' for inspiration."
+        };
+        
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.target.value) {
+                const userText = e.target.value.toLowerCase();
+                const answer = botAnswers[userText] || botAnswers.default;
+                document.getElementById('chatLog').innerHTML += `
+                    <div class="user">You: ${e.target.value}</div>
+                    <div class="bot">Bot: ${answer}</div>
+                `;
+                e.target.value = '';
+                document.getElementById('chatLog').scrollTop = 9999;
+            }
+        });
+        
+        document.getElementById('quoteBtn').addEventListener('click', () => {
+            document.getElementById('chatLog').innerHTML += `
+                <div class="bot">Bot: ${quotes[Math.floor(Math.random() * quotes.length)]}</div>
+            `;
+        });
+        
+        // Task board
+        document.getElementById('addTask').addEventListener('click', () => {
+            const taskText = document.getElementById('taskInput').value;
+            if (taskText) {
+                const task = document.createElement('div');
+                task.className = 'task';
+                task.draggable = true;
+                task.innerHTML = `
+                    <input type="checkbox">
+                    <span>${taskText}</span>
+                    <button class="delete-btn">×</button>
+                `;
+                document.getElementById('taskBoard').appendChild(task);
+                document.getElementById('taskInput').value = '';
+        
+                // Delete task
+                task.querySelector('.delete-btn').addEventListener('click', () => {
+                    task.remove();
+                });
+        
+                // Drag-and-drop
+                task.addEventListener('dragstart', () => {
+                    task.classList.add('dragging');
+                });
+                task.addEventListener('dragend', () => {
+                    task.classList.remove('dragging');
+                });
+            }
+        });
+        
+        // Drag-and-drop functionality
+        document.getElementById('taskBoard').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const draggingTask = document.querySelector('.dragging');
+            const afterElement = getDragAfterElement(e.clientY);
+            if (afterElement) {
+                afterElement.parentNode.insertBefore(draggingTask, afterElement);
+            } else {
+                document.getElementById('taskBoard').appendChild(draggingTask);
+            }
+        });
+        
+        function getDragAfterElement(y) {
+            const tasks = [...document.querySelectorAll('.task:not(.dragging)')];
+            return tasks.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        // Mini-game
+        function showGame() {
+            document.getElementById('game').style.display = 'block';
+            let clicks = 0;
+            let timeLeft = 3;
+        
+            const clicker = document.getElementById('clicker');
+            const gameTimer = document.getElementById('gameTimer');
+        
+            const gameInterval = setInterval(() => {
+                timeLeft -= 0.01;
+                gameTimer.textContent = timeLeft.toFixed(2);
+                if (timeLeft <= 0) {
+                    clearInterval(gameInterval);
+                    clicker.disabled = true;
+                    if (clicks >= 10) {
+                        gameTimer.textContent = `Success! ${clicks} clicks!`;
+                    } else {
+                        gameTimer.textContent = `Try again! Only ${clicks} clicks...`;
+                    }
+                }
+            }, 10);
+        
+            clicker.addEventListener('click', () => {
+                clicks++;
+                clicker.textContent = `Clicks: ${clicks}`;
+            });
+        }
+        
+        // Event listeners
         startBtn.addEventListener('click', startTimer);
         pauseBtn.addEventListener('click', pauseTimer);
         tryBtn.addEventListener('click', showMeme);
         memeFullscreen.addEventListener('click', () => {
             memeFullscreen.style.display = 'none';
             memeCounter.style.display = 'none';
+            document.getElementById('game').style.display = 'none';
             timeLeft = 30 * 60;
             updateTimer();
             startBtn.disabled = false;
