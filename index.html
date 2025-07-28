@@ -6,245 +6,56 @@
     <title>StudyMotivator</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap">
     <style>
-        :root {
-            --primary: #6c5ce7;
-            --accent: #fd79a8;
-            --light: #f5f6fa;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: var(--light);
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #fff, #a29bfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .timer-container {
-            margin: 30px auto;
-            width: 220px;
-            height: 220px;
-            position: relative;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        #timer {
-            font-size: 3.5rem;
-            font-weight: 600;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.2);
-            font-weight: 600;
-            min-width: 120px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        button:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-3px);
-        }
-        
-        #startBtn { 
-            background: #00b894;
-            box-shadow: 0 5px 20px rgba(0,184,148,0.3);
-        }
-        
-        #pauseBtn { 
-            background: var(--accent);
-            box-shadow: 0 5px 20px rgba(253,121,168,0.3);
-        }
-        
-        #tryBtn { 
-            background: #0984e3;
-            box-shadow: 0 5px 20px rgba(9,132,227,0.3);
-        }
-        
-        .widget {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 500px;
-            backdrop-filter: blur(5px);
-        }
-        
-        #chatLog {
-            height: 200px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            text-align: left;
-        }
-        
-        #chatLog div {
-            margin: 8px 0;
-            padding: 8px 12px;
-            border-radius: 10px;
-        }
-        
-        #chatLog .user {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        #chatLog .bot {
-            background: rgba(101, 200, 101, 0.2);
-        }
-        
-        #chatInput {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-        }
-        
-        .task-board {
-            margin-top: 15px;
-            min-height: 100px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-        
-        .task {
-            display: flex;
-            align-items: center;
-            padding: 8px;
-            margin: 5px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            cursor: grab;
-        }
-        
-        .task input[type="checkbox"] {
-            margin-right: 10px;
-        }
-        
-        .delete-btn {
-            margin-left: auto;
-            background: none;
-            border: none;
-            color: #fd79a8;
-            cursor: pointer;
-        }
-        
-        #game button {
-            background: #fd79a8;
-            font-size: 1.5rem;
-            padding: 15px 30px;
-        }
-        
-        #game p {
-            font-size: 2rem;
-            margin: 10px 0;
-        }
-        
-        .meme-fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: contain;
-            background: rgba(0,0,0,0.9);
-            z-index: 100;
-            display: none;
-            cursor: pointer;
-        }
-        
-        .meme-counter {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            padding: 8px 20px;
-            border-radius: 20px;
-            z-index: 101;
-            display: none;
-            font-size: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .confetti {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background-color: var(--accent);
-            opacity: 0;
-            z-index: 10;
-            border-radius: 50%;
-        }
-        
-        .progress-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.5s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
+        /* (Previous CSS remains the same until the 2048 section) */
 
+        /* Enhanced 2048 Game Styles */
         #game2048-container {
             max-width: 500px;
             margin: 20px auto;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 15px;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-header {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .scores-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .score-container, .best-container {
+            background: #8f7a66;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-change {
+            position: absolute;
+            right: 10px;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.5s;
+        }
+
+        .score-up {
+            color: #ffeb3b;
+            transform: translateY(-20px);
         }
 
         .game-container {
@@ -252,20 +63,19 @@
             background: #bbada0;
             border-radius: 6px;
             width: 100%;
-            height: 0;
             padding-bottom: 100%;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .grid-container {
             position: absolute;
-            z-index: 1;
             width: 92%;
             height: 92%;
             left: 4%;
             top: 4%;
             display: grid;
-            grid-template-rows: repeat(4, 1fr);
-            grid-template-columns: repeat(4, 1fr);
+            grid-template: repeat(4, 1fr) / repeat(4, 1fr);
             gap: 6px;
         }
 
@@ -275,36 +85,36 @@
         }
 
         .tile {
+            position: absolute;
+            width: 21%;
+            height: 21%;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
             border-radius: 3px;
-            font-size: 1.5rem;
-            transition: all 0.1s ease-in-out;
+            font-size: 24px;
             z-index: 10;
+            animation: appear 0.2s ease-out;
+            transition: all 0.1s ease-in-out;
         }
 
-        @media (min-width: 768px) {
+        @keyframes appear {
+            0% { transform: scale(0); }
+            90% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes merge {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @media (min-width: 500px) {
             .tile {
-                font-size: 2rem;
+                font-size: 32px;
             }
-        }
-
-        .scores-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .score-container, .best-container {
-            background: #8f7a66;
-            padding: 8px 12px;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            min-width: 80px;
         }
 
         .game-message {
@@ -314,26 +124,33 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(238, 228, 218, 0.73);
+            background: rgba(238, 228, 218, 0.85);
             z-index: 100;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             border-radius: 6px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .game-message.game-won {
-            background: rgba(237, 194, 46, 0.5);
+            background: rgba(237, 194, 46, 0.85);
         }
 
         .game-message.game-over {
-            background: rgba(238, 228, 218, 0.73);
+            background: rgba(238, 228, 218, 0.85);
         }
 
         .game-message p {
-            font-size: 60px;
+            font-size: 40px;
             font-weight: bold;
             margin: 0;
+            text-align: center;
         }
 
         .lower {
@@ -350,13 +167,47 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .keep-playing-button:hover, .retry-button:hover {
+            background: #9f8b76;
+            transform: translateY(-2px);
         }
 
         .game-explanation {
             text-align: center;
-            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 15px;
+            position: relative;
         }
 
+        .how-to-play {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .how-to-play.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .tutorial-toggle {
+            background: none;
+            border: none;
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        /* Tile colors */
         .tile-2 { background: #eee4da; color: #776e65; }
         .tile-4 { background: #ede0c8; color: #776e65; }
         .tile-8 { background: #f2b179; color: #f9f6f2; }
@@ -372,310 +223,60 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="logo">StudyMotivator</h1>
-        <p class="tagline">Study hard • Earn rewards • Repeat</p>
-        
-        <div class="timer-container">
-            <svg class="progress-ring" width="220" height="220">
-                <circle class="progress-ring__circle" stroke="#a29bfe" stroke-width="8" fill="transparent" r="100" cx="110" cy="110"/>
-            </svg>
-            <div id="timer">30:00</div>
-        </div>
-        
-        <div class="controls">
-            <button id="startBtn">Start</button>
-            <button id="pauseBtn" disabled>Pause</button>
-            <button id="tryBtn">Try Now</button>
-        </div>
+    <!-- (Previous HTML remains the same until the 2048 section) -->
 
-        <div class="widget" id="game2048-container">
-            <h3>2048 Game</h3>
-            <div class="game-header">
-                <div class="scores-container">
-                    <div class="score-container">Score: <span id="score">0</span></div>
-                    <div class="best-container">Best: <span id="best-score">0</span></div>
+    <div class="widget" id="game2048-container">
+        <h3>2048 Game</h3>
+        <div class="game-header">
+            <div class="scores-container">
+                <div class="score-container">
+                    Score: <span id="score">0</span>
+                    <span class="score-change score-up">+0</span>
+                </div>
+                <div class="best-container">
+                    Best: <span id="best-score">0</span>
                 </div>
             </div>
-            <div class="game-container">
-                <div class="game-message">
-                    <p class="message"></p>
-                    <div class="lower">
-                        <button class="keep-playing-button">Keep going</button>
-                        <button class="retry-button">Try again</button>
-                    </div>
-                </div>
-                <div class="grid-container"></div>
+            <button class="tutorial-toggle" id="tutorialToggle">Show Tutorial</button>
+            <div class="how-to-play" id="howToPlay">
+                <p><b>Goal:</b> Combine tiles to reach 2048!</p>
+                <p><b>How to play:</b></p>
+                <ol>
+                    <li>Use <b>arrow keys</b> (↑ → ↓ ←) to slide tiles</li>
+                    <li>When two <b>same numbers</b> touch, they merge!</li>
+                    <li>2+2=4, 4+4=8, and so on until 2048</li>
+                    <li>Game ends when board is full with no moves left</li>
+                </ol>
+                <p>Tip: Try to keep your highest number in a corner!</p>
             </div>
-            <p class="game-explanation">
-                <b>HOW TO PLAY:</b> Use arrow keys to move tiles. When two tiles with the same number touch, they merge into one!
-            </p>
         </div>
-        
-        <div class="widget">
-            <h3>Motivation Bot</h3>
-            <div id="chatLog"></div>
-            <input id="chatInput" type="text" placeholder="Type 'quote' or 'tired'...">
-            <button id="quoteBtn">Random Quote</button>
+        <div class="game-container">
+            <div class="game-message">
+                <p class="message"></p>
+                <div class="lower">
+                    <button class="keep-playing-button">Keep going</button>
+                    <button class="retry-button">Try again</button>
+                </div>
+            </div>
+            <div class="grid-container"></div>
         </div>
-        
-        <div class="widget">
-            <h3>My Goals</h3>
-            <input id="taskInput" type="text" placeholder="E.g. 'Learn JavaScript'">
-            <button id="addTask">+ Add Task</button>
-            <div id="taskBoard" class="task-board"></div>
-        </div>
-        
-        <img id="memeFullscreen" class="meme-fullscreen" src="" alt="Reward Meme">
-        <div id="memeCounter" class="meme-counter">Meme 1/9</div>
+        <p class="game-explanation">
+            <b>Quick controls:</b> Use keyboard arrows or swipe on mobile
+        </p>
     </div>
 
-    <script>
-        let timer;
-        let timeLeft = 30 * 60;
-        let isRunning = false;
-        let currentMemeIndex = 0;
-        
-        const memes = [
-            "https://pbs.twimg.com/tweet_video_thumb/Goqz_yBXwAEZ4-2.jpg",
-            "https://i.gifer.com/embedded/download/2xTG.gif",
-            "https://art.pixilart.com/sr2d12e7b44c659.png",
-            "https://images.steamusercontent.com/ugc/55838026442545995/1B8CFEACA6F8E58C798E892BA29E685C9DDE5B9A/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false",
-            "https://avatars.mds.yandex.net/i?id=599e8d594675201df0730dae7da066e2f13a1aaf-5179059-images-thumbs&n=13",
-            "https://media.tenor.com/31MJQhL6sM8AAAAd/joe-rogan-surprised.gif",
-            "https://avatars.mds.yandex.net/i?id=4ff04e6d8b5e18d8fea3496585bd0b022d621c70-5340383-images-thumbs&n=13",
-            "https://lh4.googleusercontent.com/-7c9apZud9r8/UqNSsH3Ev5I/AAAAAAAABK8/SZkZPWvf45c/w800-h800/cat-plays-ipad-dancing-trolls-trollface-meme-lolcat-funny.gif",
-            "https://avatars.mds.yandex.net/i?id=a9016c7748cb7f85efea89a3c0c76249af3d9a04-5467645-images-thumbs&n=13"
-        ];
-        
-        const timerDisplay = document.getElementById('timer');
-        const startBtn = document.getElementById('startBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const tryBtn = document.getElementById('tryBtn');
-        const memeFullscreen = document.getElementById('memeFullscreen');
-        const memeCounter = document.getElementById('memeCounter');
-        const circle = document.querySelector('.progress-ring__circle');
-        const radius = circle.r.baseVal.value;
-        const circumference = 2 * Math.PI * radius;
-        
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = circumference;
-        
-        function setProgress(percent) {
-            const offset = circumference - percent * circumference;
-            circle.style.strokeDashoffset = offset;
-        }
-        
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            const progress = 1 - (timeLeft / (30 * 60));
-            setProgress(progress);
-            
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                if (Math.random() > 0.5) showGame();
-                else showMeme();
-            }
-        }
-        
-        function startTimer() {
-            if (!isRunning) {
-                isRunning = true;
-                timer = setInterval(() => {
-                    timeLeft--;
-                    updateTimer();
-                }, 1000);
-                startBtn.disabled = true;
-                pauseBtn.disabled = false;
-            }
-        }
-        
-        function pauseTimer() {
-            if (isRunning) {
-                clearInterval(timer);
-                isRunning = false;
-                pauseBtn.textContent = "Resume";
-            } else {
-                startTimer();
-                pauseBtn.textContent = "Pause";
-            }
-        }
-        
-        function showMeme() {
-            currentMemeIndex = Math.floor(Math.random() * memes.length);
-            memeFullscreen.src = memes[currentMemeIndex];
-            memeFullscreen.style.display = 'block';
-            memeCounter.textContent = `Meme ${currentMemeIndex + 1}/${memes.length}`;
-            memeCounter.style.display = 'block';
-            createConfetti();
-        }
-        
-        function nextMeme() {
-            currentMemeIndex = (currentMemeIndex + 1) % memes.length;
-            memeFullscreen.src = memes[currentMemeIndex];
-            memeCounter.textContent = `Meme ${currentMemeIndex + 1}/${memes.length}`;
-            createConfetti();
-        }
-        
-        function createConfetti() {
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = -10 + 'px';
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = confetti.style.width;
-                document.body.appendChild(confetti);
-                
-                const animation = confetti.animate([
-                    { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
-                    { transform: `translate(${Math.random() * 200 - 100}px, 100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 3000 + 2000,
-                    easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
-                });
-                
-                animation.onfinish = () => confetti.remove();
-            }
-        }
-        
-        const quotes = [
-            "Success is 1% talent and 99% hard work.",
-            "The only way to do great work is to love what you do.",
-            "Don't watch the clock; do what it does. Keep going.",
-            "Believe you can and you're halfway there."
-        ];
-        
-        const botAnswers = {
-            "hi": "Hello! Ready to be productive today? 💪",
-            "hello": "Hey there! Type 'quote' for motivation!",
-            "tired": "Take a 5-minute break, then keep going!",
-            "quote": quotes[Math.floor(Math.random() * quotes.length)],
-            "default": "You're capable of amazing things! Type 'quote' for inspiration."
-        };
-        
-        document.getElementById('chatInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && e.target.value) {
-                const userText = e.target.value.toLowerCase();
-                const answer = botAnswers[userText] || botAnswers.default;
-                document.getElementById('chatLog').innerHTML += `
-                    <div class="user">You: ${e.target.value}</div>
-                    <div class="bot">Bot: ${answer}</div>
-                `;
-                e.target.value = '';
-                document.getElementById('chatLog').scrollTop = 9999;
-            }
-        });
-        
-        document.getElementById('quoteBtn').addEventListener('click', () => {
-            document.getElementById('chatLog').innerHTML += `
-                <div class="bot">Bot: ${quotes[Math.floor(Math.random() * quotes.length)]}</div>
-            `;
-        });
-        
-        document.getElementById('addTask').addEventListener('click', () => {
-            const taskText = document.getElementById('taskInput').value;
-            if (taskText) {
-                const task = document.createElement('div');
-                task.className = 'task';
-                task.draggable = true;
-                task.innerHTML = `
-                    <input type="checkbox">
-                    <span>${taskText}</span>
-                    <button class="delete-btn">×</button>
-                `;
-                document.getElementById('taskBoard').appendChild(task);
-                document.getElementById('taskInput').value = '';
-        
-                task.querySelector('.delete-btn').addEventListener('click', () => {
-                    task.remove();
-                });
-        
-                task.addEventListener('dragstart', () => {
-                    task.classList.add('dragging');
-                });
-                task.addEventListener('dragend', () => {
-                    task.classList.remove('dragging');
-                });
-            }
-        });
-        
-        document.getElementById('taskBoard').addEventListener('dragover', (e) => {
-            e.preventDefault();
-            const draggingTask = document.querySelector('.dragging');
-            const afterElement = getDragAfterElement(e.clientY);
-            if (afterElement) {
-                afterElement.parentNode.insertBefore(draggingTask, afterElement);
-            } else {
-                document.getElementById('taskBoard').appendChild(draggingTask);
-            }
-        });
-        
-        function getDragAfterElement(y) {
-            const tasks = [...document.querySelectorAll('.task:not(.dragging)')];
-            return tasks.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
-        }
-        
-        function showGame() {
-            document.getElementById('game').style.display = 'block';
-            let clicks = 0;
-            let timeLeft = 3;
-        
-            const clicker = document.getElementById('clicker');
-            const gameTimer = document.getElementById('gameTimer');
-        
-            const gameInterval = setInterval(() => {
-                timeLeft -= 0.01;
-                gameTimer.textContent = timeLeft.toFixed(2);
-                if (timeLeft <= 0) {
-                    clearInterval(gameInterval);
-                    clicker.disabled = true;
-                    if (clicks >= 10) {
-                        gameTimer.textContent = `Success! ${clicks} clicks!`;
-                    } else {
-                        gameTimer.textContent = `Try again! Only ${clicks} clicks...`;
-                    }
-                }
-            }, 10);
-        
-            clicker.addEventListener('click', () => {
-                clicks++;
-                clicker.textContent = `Clicks: ${clicks}`;
-            });
-        }
-        
-        startBtn.addEventListener('click', startTimer);
-        pauseBtn.addEventListener('click', pauseTimer);
-        tryBtn.addEventListener('click', showMeme);
-        memeFullscreen.addEventListener('click', () => {
-            memeFullscreen.style.display = 'none';
-            memeCounter.style.display = 'none';
-            document.getElementById('game').style.display = 'none';
-            timeLeft = 30 * 60;
-            updateTimer();
-            startBtn.disabled = false;
-            pauseBtn.disabled = true;
-            pauseBtn.textContent = "Pause";
-        });
-        memeFullscreen.addEventListener('dblclick', nextMeme);
+    <!-- (Rest of your HTML remains the same) -->
 
+    <script>
+        // (Previous JavaScript remains the same until the 2048 section)
+
+        // Enhanced 2048 Game Implementation
         let grid = [];
         let score = 0;
         let bestScore = localStorage.getItem('bestScore2048') || 0;
         let gameOver = false;
         let won = false;
+        let lastMoveScore = 0;
 
         document.getElementById('best-score').textContent = bestScore;
 
@@ -708,6 +309,14 @@
             if (emptyCells.length > 0) {
                 const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 grid[randomCell.row][randomCell.col] = Math.random() < 0.9 ? 2 : 4;
+                
+                const tileElement = document.createElement('div');
+                tileElement.className = `tile tile-${grid[randomCell.row][randomCell.col]}`;
+                tileElement.textContent = grid[randomCell.row][randomCell.col];
+                tileElement.style.left = `${randomCell.col * 25 + randomCell.col * 2}%`;
+                tileElement.style.top = `${randomCell.row * 25 + randomCell.row * 2}%`;
+                tileElement.style.animation = 'appear 0.2s ease-out';
+                document.querySelector('.grid-container').appendChild(tileElement);
             }
         }
 
@@ -732,6 +341,7 @@
             if (gameOver) return;
 
             let moved = false;
+            lastMoveScore = 0;
             const oldGrid = JSON.parse(JSON.stringify(grid));
 
             if (direction === 'up' || direction === 'down') {
@@ -747,7 +357,7 @@
                 for (let i = 0; i < newRow.length - 1; i++) {
                     if (newRow[i] === newRow[i + 1]) {
                         newRow[i] *= 2;
-                        score += newRow[i];
+                        lastMoveScore += newRow[i];
                         if (newRow[i] === 2048 && !won) {
                             won = true;
                             showGameMessage(true);
@@ -776,17 +386,36 @@
             }
 
             if (moved) {
+                score += lastMoveScore;
+                updateScore();
                 addRandomTile();
                 updateGrid();
-                document.getElementById('score').textContent = score;
-                if (score > bestScore) {
-                    bestScore = score;
-                    document.getElementById('best-score').textContent = bestScore;
-                    localStorage.setItem('bestScore2048', bestScore);
-                }
+                
                 if (!hasAvailableMoves()) {
                     showGameMessage(false);
                 }
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+            
+            if (lastMoveScore > 0) {
+                const scoreChange = document.querySelector('.score-change');
+                scoreChange.textContent = `+${lastMoveScore}`;
+                scoreChange.style.opacity = '1';
+                scoreChange.style.transform = 'translateY(-30px)';
+                
+                setTimeout(() => {
+                    scoreChange.style.opacity = '0';
+                    scoreChange.style.transform = 'translateY(-20px)';
+                }, 1000);
+            }
+            
+            if (score > bestScore) {
+                bestScore = score;
+                document.getElementById('best-score').textContent = bestScore;
+                localStorage.setItem('bestScore2048', bestScore);
             }
         }
 
@@ -815,7 +444,7 @@
             gameOver = !isWin;
             const message = document.querySelector('.game-message');
             message.style.display = 'flex';
-            message.querySelector('.message').textContent = isWin ? 'You Win!' : 'Game Over!';
+            message.querySelector('.message').textContent = isWin ? 'You Reached 2048!' : 'Game Over!';
             message.classList.toggle('game-won', isWin);
             message.classList.toggle('game-over', !isWin);
         }
@@ -831,6 +460,42 @@
         document.querySelector('.keep-playing-button').addEventListener('click', () => {
             document.querySelector('.game-message').style.display = 'none';
         });
+
+        document.getElementById('tutorialToggle').addEventListener('click', function() {
+            const tutorial = document.getElementById('howToPlay');
+            tutorial.classList.toggle('show');
+            this.textContent = tutorial.classList.contains('show') ? 'Hide Tutorial' : 'Show Tutorial';
+        });
+
+        // Touch controls for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+
+        document.querySelector('.game-container').addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, false);
+
+        document.querySelector('.game-container').addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const dx = touchEndX - touchStartX;
+            const dy = touchEndY - touchStartY;
+            
+            if (Math.abs(dx) > Math.abs(dy)) {
+                if (dx > 50) move('right');
+                else if (dx < -50) move('left');
+            } else {
+                if (dy > 50) move('down');
+                else if (dy < -50) move('up');
+            }
+        }
 
         initGame();
     </script>
